@@ -1,4 +1,3 @@
-import "./App.css";
 import { Router } from "@reach/router";
 import Home from "./Home";
 import Pokemon from "./Pokemon";

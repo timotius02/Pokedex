@@ -1,5 +1,7 @@
 import { useQuery, gql } from "@apollo/client";
-import { Link } from "@reach/router";
+import Card from "./Components/Card";
+
+import "./Home.css";
 
 const QUERY = gql`
   query pokemons($limit: Int, $offset: Int) {
@@ -10,10 +12,8 @@ const QUERY = gql`
       status
       message
       results {
-        url
-        id
         name
-        image
+        artwork
       }
     }
   }
@@ -31,13 +31,16 @@ function Home() {
   if (error) console.log(error);
 
   return (
-    <div>
-      {data.pokemons.results.map((pokemon) => (
-        <div key={pokemon.name}>
-          <Link to={"/pokemon/" + pokemon.name}>{pokemon.name}</Link>
-        </div>
-      ))}
-    </div>
+    <main>
+      <div>
+        <h1>Pokedex</h1>
+      </div>
+      <div className="card-container">
+        {data.pokemons.results.map((pokemon) => (
+          <Card key={pokemon.name} {...pokemon} />
+        ))}
+      </div>
+    </main>
   );
 }
 
