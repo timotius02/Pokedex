@@ -1,5 +1,9 @@
 import { useQuery, gql } from "@apollo/client";
-import Card from "./Components/Card";
+import Container from "@mui/material/Container";
+import PokemonCardsList from "./Components/PokemonCardsList";
+import Typography from "@mui/material/Typography";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 
 import "./Home.css";
 
@@ -12,34 +16,61 @@ const QUERY = gql`
       status
       message
       results {
+        id
         name
-        artwork
+        image
       }
     }
   }
 `;
 
 const variables = {
-  limit: 151,
+  limit: 100,
   offset: 0,
 };
 
 function Home() {
   const { loading, error, data } = useQuery(QUERY, { variables });
 
-  if (loading) return "loading...";
-  if (error) console.log(error);
-
+  if (error) {
+    return "Error...";
+  }
   return (
     <main>
-      <div>
-        <h1>Pokedex</h1>
-      </div>
-      <div className="card-container">
-        {data.pokemons.results.map((pokemon) => (
-          <Card key={pokemon.name} {...pokemon} />
-        ))}
-      </div>
+      <Container>
+        {loading ? (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              color: "white",
+              fontSize: 24,
+              textTransform: "uppercase",
+            }}
+          >
+            <CircularProgress color="inherit" size={60} />
+            <Typography>Loading</Typography>
+          </Box>
+        ) : (
+          <>
+            <img
+              style={{
+                maxWidth: "90%",
+                width: 400,
+                display: "block",
+                margin: "40px auto",
+              }}
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/404px-International_Pok%C3%A9mon_logo.svg.png"
+              alt="Pokemon Logo"
+            />
+            <PokemonCardsList
+              pokemons={data.pokemons.results}
+            ></PokemonCardsList>
+          </>
+        )}
+      </Container>
     </main>
   );
 }
