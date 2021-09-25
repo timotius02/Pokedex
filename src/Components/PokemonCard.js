@@ -6,19 +6,9 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 
-const GET_TYPE = gql`
-  query getType($name: String!) {
-    pokemon(name: $name) {
-      name
-      id
-      types {
-        type {
-          name
-        }
-      }
-    }
-  }
-`;
+import client from "../lib/apollo-client";
+import { GET_POKEMON, GET_TYPE } from "../queries";
+import { pokemonNumber } from "../utils";
 
 export function PokemonCard({ id, name, image }) {
   const { loading, error, data } = useQuery(GET_TYPE, { variables: { name } });
@@ -33,7 +23,16 @@ export function PokemonCard({ id, name, image }) {
 
   return (
     <Link underline="none" component={RouterLink} to={"/pokemon/" + name}>
-      <Card sx={{ textAlign: "center" }} variant="outlined">
+      <Card
+        sx={{ textAlign: "center" }}
+        variant="outlined"
+        onMouseOver={() =>
+          client.query({
+            query: GET_POKEMON,
+            variables: { name },
+          })
+        }
+      >
         <CardContent>
           <Typography
             sx={{
@@ -42,7 +41,7 @@ export function PokemonCard({ id, name, image }) {
             }}
             color="textSecondary"
           >
-            {"#" + id}
+            {pokemonNumber(id)}
           </Typography>
           <img alt={name} src={image} />
           <Typography variant="h5" component="h2">

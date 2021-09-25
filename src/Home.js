@@ -1,36 +1,18 @@
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import Container from "@mui/material/Container";
 import PokemonCardsList from "./Components/PokemonCardsList";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
-
-import "./Home.css";
-
-const QUERY = gql`
-  query pokemons($limit: Int, $offset: Int) {
-    pokemons(limit: $limit, offset: $offset) {
-      count
-      next
-      previous
-      status
-      message
-      results {
-        id
-        name
-        image
-      }
-    }
-  }
-`;
+import { GET_ALL_POKEMONS } from "./queries";
 
 const variables = {
-  limit: 100,
+  limit: 10,
   offset: 0,
 };
 
 function Home() {
-  const { loading, error, data } = useQuery(QUERY, { variables });
+  const { loading, error, data } = useQuery(GET_ALL_POKEMONS, { variables });
 
   if (error) {
     return "Error...";
