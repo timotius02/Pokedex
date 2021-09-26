@@ -7,12 +7,14 @@ import Box from "@mui/material/Box";
 import { GET_ALL_POKEMONS } from "./queries";
 
 const variables = {
-  limit: 10,
+  limit: 20,
   offset: 0,
 };
 
 function Home() {
-  const { loading, error, data } = useQuery(GET_ALL_POKEMONS, { variables });
+  const { loading, error, data, fetchMore } = useQuery(GET_ALL_POKEMONS, {
+    variables,
+  });
 
   if (error) {
     return "Error...";
@@ -35,6 +37,13 @@ function Home() {
         ) : (
           <>
             <img
+              onClick={() => {
+                fetchMore({
+                  variables: {
+                    offset: data.pokemons.results.length,
+                  },
+                });
+              }}
               style={{
                 maxWidth: "90%",
                 width: 400,
@@ -44,7 +53,16 @@ function Home() {
               src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/404px-International_Pok%C3%A9mon_logo.svg.png"
               alt="Pokemon Logo"
             />
-            <PokemonCardsList pokemons={data.pokemons.results} />
+            <PokemonCardsList
+              pokemons={data.pokemons.results || []}
+              onLoadMore={() =>
+                fetchMore({
+                  variables: {
+                    offset: data.pokemons.results.length,
+                  },
+                })
+              }
+            />
           </>
         )}
       </Container>

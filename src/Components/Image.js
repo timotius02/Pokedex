@@ -120,6 +120,7 @@ export default class Image extends Component {
     const styles = this.getStyles();
 
     const {
+      alt,
       animationDuration,
       aspectRatio,
       color,
@@ -141,6 +142,7 @@ export default class Image extends Component {
         {image.src && (
           <img
             {...image}
+            alt={alt}
             ref={this.image}
             style={styles.image}
             onLoad={this.handleLoadImage}

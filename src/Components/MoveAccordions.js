@@ -42,8 +42,8 @@ function MoveAccordion({ move }) {
             : `
             ${data.move.response.flavor_text_entries[0].flavor_text}`}
         </Typography>
-        <TableContainer sx={{ m: 1 }}>
-          <Table aria-label="simple table">
+        <TableContainer>
+          <Table size="small" aria-label="a dense table">
             <TableHead>
               <TableRow>
                 <TableCell>Power</TableCell>

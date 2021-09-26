@@ -28,9 +28,10 @@ import MoveAccordions from "./Components/MoveAccordions";
 import PokemonStats from "./Components/PokemonStats";
 
 function Pokemon({ name }) {
-  const { loading, error, data } = useQuery(GET_POKEMON, {
+  let { loading, error, data } = useQuery(GET_POKEMON, {
     variables: { name },
   });
+
   const [myPokemons, setMyPokemons] = useLocalStorage("myPokemon", []);
   const [open, setOpen] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -130,6 +131,16 @@ function Pokemon({ name }) {
               <MoveAccordions moves={moves} />
             </Paper>
           </Grid>
+          {/* <Grid item xs={12} sm={4}>
+            <Paper variant="outlined">
+              <Typography variant="h6" sx={{ pt: 1.5, pl: 1.5 }}>
+                Moves
+              </Typography>
+              <MoveAccordions
+                moves={moves.slice(Math.floor(moves.length / 2))}
+              />
+            </Paper>
+          </Grid> */}
         </Grid>
       </Box>
 
