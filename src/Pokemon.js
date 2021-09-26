@@ -1,8 +1,9 @@
+/** @jsxImportSource @emotion/react */
 import { useState } from "react";
 import { useQuery } from "@apollo/client";
 import Container from "@mui/material/Container";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
+
+import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Fab from "@mui/material/Fab";
@@ -14,54 +15,33 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
 
 import useLocalStorage from "./hooks/useLocalStorage";
 
 import tempData from "./tempData";
 import { GET_POKEMON } from "./queries";
 import { pokemonNumber } from "./utils";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Box from "@mui/material/Box";
 import TypePills from "./Components/TypePills";
-
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-}
-
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
-    </div>
-  );
-}
+import Image from "./Components/Image";
+import MoveAccordions from "./Components/MoveAccordions";
+import PokemonStats from "./Components/PokemonStats";
 
 function Pokemon({ name }) {
-  let { loading, error, data } = useQuery(GET_POKEMON, { variables: { name } });
+  const { loading, error, data } = useQuery(GET_POKEMON, {
+    variables: { name },
+  });
   const [myPokemons, setMyPokemons] = useLocalStorage("myPokemon", []);
   const [open, setOpen] = useState(false);
   const [isError, setIsError] = useState(false);
   const [pokemonName, setPokemonName] = useState("");
-  const [tabIndex, setTabIndex] = useState(0);
 
   if (loading) return "loading...";
   if (error) {
     data = tempData;
   }
 
-  let { id, sprites, moves, height, weight } = data.pokemon;
+  let { id, sprites, height, weight } = data.pokemon;
 
   const types = data.pokemon.types.map((curr) => curr.type.name);
   const abilities = data.pokemon.abilities.map((curr) => curr.ability.name);
@@ -69,6 +49,7 @@ function Pokemon({ name }) {
     curr.stat.name,
     curr.base_stat,
   ]);
+  const moves = data.pokemon.moves.map((curr) => curr.move.name);
 
   const handleClose = () => {
     setOpen(false);
@@ -101,75 +82,56 @@ function Pokemon({ name }) {
       setPokemonName("");
     }
   }
-  const changeTab = (event, newValue) => {
-    setTabIndex(newValue);
-  };
-
   return (
     <Container maxWidth="lg">
-      <Card sx={{ marginTop: "10%" }}>
-        <CardContent sx={{ display: "flex" }}>
-          <Stack sx={{ flex: 1, textAlign: "center", padding: "1em 0" }}>
-            <Typography>{pokemonNumber(id)}</Typography>
+      <Box sx={{ flexGrow: 1, mt: 3 }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <Stack spacing={2}>
+              <Paper variant="outlined">
+                <Stack sx={{ flex: 1, textAlign: "center", padding: "1em 0" }}>
+                  <Typography>{pokemonNumber(id)}</Typography>
 
-            <Typography variant="h6">{data.pokemon.name}</Typography>
-            <img
-              style={{ maxWidth: 200, width: "90%", margin: "auto" }}
-              src={sprites.front_default}
-              alt={data.pokemon.name}
-            />
+                  <Typography variant="h5">{data.pokemon.name}</Typography>
 
-            <TypePills types={types} />
-          </Stack>
+                  <div
+                    css={{
+                      margin: "auto",
+                      width: "90%",
+                      maxWidth: 200,
+                    }}
+                  >
+                    <Image
+                      src={sprites.front_default}
+                      alt={data.pokemon.name}
+                    />
+                  </div>
 
-          <Stack sx={{ flex: 3 }}>
-            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-              <Tabs
-                value={tabIndex}
-                onChange={changeTab}
-                aria-label="basic tabs example"
-              >
-                <Tab label="Item One" {...a11yProps(0)} />
-                <Tab label="Item Two" {...a11yProps(1)} />
-                <Tab label="Item Three" {...a11yProps(2)} />
-              </Tabs>
-            </Box>
-            <TabPanel value={tabIndex} index={0}>
-              <Typography>{"Height: " + height / 10 + " m"}</Typography>
-              <Typography>{"Weight: " + weight / 10 + " kg"}</Typography>
-              <Typography>Abilities</Typography>
-              <Typography>{abilities.join(", ")}</Typography>
-            </TabPanel>
-            <TabPanel value={tabIndex} index={1}>
-              <Typography>Base Stats</Typography>
-              <Grid container spacing={2}>
-                {stats.map((stat) => {
-                  return (
-                    <Grid item key={stat[0]} xs={12} sm={6} md={4} lg={3}>
-                      <Typography>{stat[0]}</Typography>
-                      <Typography>{stat[1]}</Typography>
-                    </Grid>
-                  );
-                })}
-              </Grid>
-            </TabPanel>
-            <TabPanel value={tabIndex} index={2}>
-              <Typography>Moves</Typography>
-              <Grid
-                container
-                spacing={2}
-                sx={{ maxHeight: 400, overflow: "scroll" }}
-              >
-                {moves.map((curr) => (
-                  <Grid item key={curr.move.name} xs={12} sm={6} md={4} lg={3}>
-                    <Typography>{curr.move.name}</Typography>
-                  </Grid>
-                ))}
-              </Grid>
-            </TabPanel>
-          </Stack>
-        </CardContent>
-      </Card>
+                  <TypePills types={types} />
+                </Stack>
+              </Paper>
+              <Paper variant="outlined" sx={{ p: 2 }}>
+                <Typography>{"Height: " + height / 10 + " m"}</Typography>
+                <Typography>{"Weight: " + weight / 10 + " kg"}</Typography>
+                <Typography>Abilities</Typography>
+                <Typography>{abilities.join(", ")}</Typography>
+              </Paper>
+              <Paper variant="outlined" sx={{ p: 2 }}>
+                <PokemonStats stats={stats} />
+              </Paper>
+            </Stack>
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <Paper variant="outlined">
+              <Typography variant="h6" sx={{ pt: 1.5, pl: 1.5 }}>
+                Moves
+              </Typography>
+              <MoveAccordions moves={moves} />
+            </Paper>
+          </Grid>
+        </Grid>
+      </Box>
 
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>{`Gotcha! ${name} was caught.`}</DialogTitle>

@@ -1,14 +1,17 @@
 import { Link as RouterLink } from "@reach/router";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
+import client from "../lib/apollo-client";
 
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 
-import client from "../lib/apollo-client";
+import Image from "../Components/Image";
+
 import { GET_POKEMON, GET_TYPE } from "../queries";
 import { pokemonNumber } from "../utils";
+import TypePills from "./TypePills";
 
 export function PokemonCard({ id, name, image }) {
   const { loading, error, data } = useQuery(GET_TYPE, { variables: { name } });
@@ -43,11 +46,11 @@ export function PokemonCard({ id, name, image }) {
           >
             {pokemonNumber(id)}
           </Typography>
-          <img alt={name} src={image} />
+          <Image alt={name} src={image} />
           <Typography variant="h5" component="h2">
             {name}
           </Typography>
-          <Typography color="textSecondary">{types.join(", ")}</Typography>
+          <TypePills types={types} />
         </CardContent>
       </Card>
     </Link>

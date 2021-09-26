@@ -70,3 +70,14 @@ export const GET_TYPE = gql`
     }
   }
 `;
+
+export const GET_MOVE = gql`
+  query Move($name: String!) {
+    move(move: $name) {
+      message
+      status
+      response
+      params
+    }
+  }
+`;

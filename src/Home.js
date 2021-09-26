@@ -17,23 +17,20 @@ function Home() {
   if (error) {
     return "Error...";
   }
+
   return (
     <main>
       <Container>
         {loading ? (
           <Box
             sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
               color: "white",
-              fontSize: 24,
               textTransform: "uppercase",
+              textAlign: "center",
             }}
           >
             <CircularProgress color="inherit" size={60} />
-            <Typography>Loading</Typography>
+            <Typography variant="h5">Loading</Typography>
           </Box>
         ) : (
           <>
@@ -47,9 +44,7 @@ function Home() {
               src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/404px-International_Pok%C3%A9mon_logo.svg.png"
               alt="Pokemon Logo"
             />
-            <PokemonCardsList
-              pokemons={data.pokemons.results}
-            ></PokemonCardsList>
+            <PokemonCardsList pokemons={data.pokemons.results} />
           </>
         )}
       </Container>
