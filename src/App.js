@@ -2,14 +2,16 @@ import { Router, Link as RouterLink } from "@reach/router";
 import Link from "@mui/material/Link";
 import Home from "./Home";
 import Pokemon from "./Pokemon";
-import MyPokemons from "./MyPokemons";
-import NotFound from "./NotFound";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Global, css } from "@emotion/react";
+
+import MyPokemons from "./MyPokemons";
+import NotFound from "./NotFound";
+import { ScrollToTop } from "./utils";
 
 function App() {
   return (
@@ -46,10 +48,12 @@ function App() {
         </Toolbar>
       </AppBar>
       <Router primary={false}>
-        <Home path="/" />
-        <Pokemon path="/pokemon/:name" />
-        <MyPokemons path="/my-pokemons" />
-        <NotFound default />
+        <ScrollToTop path="/">
+          <Home path="/" />
+          <Pokemon path="/pokemon/:name" />
+          <MyPokemons path="/my-pokemons" />
+          <NotFound default />
+        </ScrollToTop>
       </Router>
     </>
   );

@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import { GET_ALL_POKEMONS } from "./queries";
 
 const variables = {
-  limit: 20,
+  limit: 50,
   offset: 0,
 };
 
@@ -22,7 +22,7 @@ function Home() {
 
   return (
     <main>
-      <Container>
+      <Container maxWidth={false}>
         {loading ? (
           <Box
             sx={{
@@ -47,6 +47,7 @@ function Home() {
               style={{
                 maxWidth: "90%",
                 width: 400,
+                height: 140,
                 display: "block",
                 margin: "40px auto",
               }}
@@ -55,13 +56,14 @@ function Home() {
             />
             <PokemonCardsList
               pokemons={data.pokemons.results || []}
-              onLoadMore={() =>
+              loading={loading}
+              onLoadMore={() => {
                 fetchMore({
                   variables: {
                     offset: data.pokemons.results.length,
                   },
-                })
-              }
+                });
+              }}
             />
           </>
         )}
