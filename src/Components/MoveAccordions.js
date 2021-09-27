@@ -18,7 +18,7 @@ import { useState } from "react";
 function MoveAccordion({ move }) {
   const [expandedOnce, setExpandedOnce] = useState(false);
 
-  const { loading, error, data } = useQuery(GET_MOVE, {
+  const { loading, data } = useQuery(GET_MOVE, {
     skip: !expandedOnce,
     variables: { name: move },
   });
@@ -26,6 +26,7 @@ function MoveAccordion({ move }) {
   function handleChange() {
     if (!expandedOnce) setExpandedOnce(true);
   }
+
   return (
     <Accordion onChange={handleChange}>
       <AccordionSummary
@@ -40,7 +41,11 @@ function MoveAccordion({ move }) {
           {!expandedOnce || loading
             ? "loading..."
             : `
-            ${data.move.response.flavor_text_entries[0].flavor_text}`}
+            ${
+              data.move.response.flavor_text_entries.find(
+                (ft) => ft.language.name === "en"
+              ).flavor_text
+            }`}
         </Typography>
         <TableContainer>
           <Table size="small" aria-label="a dense table">

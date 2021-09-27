@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import { useQuery } from "@apollo/client";
 import Container from "@mui/material/Container";
 import PokemonCardsList from "./Components/PokemonCardsList";
@@ -7,7 +8,7 @@ import Box from "@mui/material/Box";
 import { GET_ALL_POKEMONS } from "./queries";
 
 const variables = {
-  limit: 50,
+  limit: 20,
   offset: 0,
 };
 
@@ -37,14 +38,7 @@ function Home() {
         ) : (
           <>
             <img
-              onClick={() => {
-                fetchMore({
-                  variables: {
-                    offset: data.pokemons.results.length,
-                  },
-                });
-              }}
-              style={{
+              css={{
                 maxWidth: "90%",
                 width: 400,
                 height: 140,

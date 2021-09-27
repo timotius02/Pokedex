@@ -11,11 +11,12 @@ import Image from "../Components/Image";
 import { GET_POKEMON, GET_TYPE } from "../queries";
 import { pokemonNumber } from "../utils";
 import TypePills from "./TypePills";
+import { Capitalize } from "../utils";
 
 export function PokemonCard({ id, name, image, style }) {
   const { loading, error, data } = useQuery(GET_TYPE, { variables: { name } });
 
-  if (loading)
+  if (loading || error)
     return (
       <Card style={style} sx={{ textAlign: "center" }} variant="outlined">
         <CardContent
@@ -30,7 +31,6 @@ export function PokemonCard({ id, name, image, style }) {
         </CardContent>
       </Card>
     );
-  if (error) console.log(error);
 
   const types = data.pokemon.types.reduce(
     (prev, curr) => [...prev, curr.type.name],
@@ -62,7 +62,7 @@ export function PokemonCard({ id, name, image, style }) {
           </Typography>
           <Image alt={name} src={image} />
           <Typography variant="h5" component="h2">
-            {name}
+            {Capitalize(name)}
           </Typography>
           <TypePills types={types} />
         </CardContent>

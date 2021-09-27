@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import { forwardRef } from "react";
 import Typography from "@mui/material/Typography";
 import { FixedSizeGrid } from "react-window";
@@ -21,7 +22,7 @@ function renderCell({ columnIndex, rowIndex, data, style }) {
     <PokemonCard
       style={{
         ...style,
-        left: style.left + GUTTER_SIZE,
+        left: style.left + (columnCount > 1 ? GUTTER_SIZE : GUTTER_SIZE / 2),
         top: style.top + GUTTER_SIZE,
         width: style.width - GUTTER_SIZE,
         height: style.height - GUTTER_SIZE,
@@ -68,21 +69,6 @@ const OnItemsRenderedGrid =
     });
   };
 
-const mergeRefs = (...refs) => {
-  const filteredRefs = refs.filter(Boolean);
-  if (!filteredRefs.length) return null;
-  if (filteredRefs.length === 0) return filteredRefs[0];
-  return (inst) => {
-    for (const ref of filteredRefs) {
-      if (typeof ref === "function") {
-        ref(inst);
-      } else if (ref) {
-        ref.current = inst;
-      }
-    }
-  };
-};
-
 export function PokemonCardsList({ pokemons, onLoadMore }) {
   const size = useWindowSize();
 
@@ -93,21 +79,24 @@ export function PokemonCardsList({ pokemons, onLoadMore }) {
   const isItemLoaded = (index) => !!pokemons[index * columnCount];
 
   return pokemons.length > 0 ? (
-    <div style={{ display: "flex", justifyContent: "center" }}>
+    <div css={{ display: "flex", justifyContent: "center" }}>
       <ReactWindowScroller isGrid>
-        {({ ref, outerRef, style, onScroll }) => (
+        {({ ref: scrollerRef, outerRef, style, onScroll }) => (
           <InfiniteLoader
             isItemLoaded={isItemLoaded}
             itemCount={ITEM_COUNT}
             loadMoreItems={onLoadMore}
           >
-            {({ onItemsRendered, loadingRef }) => (
+            {({ onItemsRendered, ref: loadingRef }) => (
               <FixedSizeGrid
                 onItemsRendered={OnItemsRenderedGrid(
                   onItemsRendered,
                   columnCount
                 )}
-                ref={mergeRefs(ref, loadingRef)}
+                ref={(ref) => {
+                  loadingRef(ref);
+                  scrollerRef.current = ref;
+                }}
                 columnCount={columnCount}
                 columnWidth={292 + GUTTER_SIZE}
                 height={size.height + 292 * 2}

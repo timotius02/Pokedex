@@ -1,12 +1,11 @@
 import { useLayoutEffect } from "react";
 
 export const pokemonNumber = (id) => {
-  let temp = id.toString();
-  if (temp.length < 10) {
-    return "#00" + temp;
-  } else if (temp.length < 100) {
-    return "#0" + temp;
-  } else return "#" + temp;
+  if (id < 10) {
+    return "#00" + id.toString();
+  } else if (id < 100) {
+    return "#0" + id.toString();
+  } else return "#" + id.toString();
 };
 
 /*
@@ -16,4 +15,8 @@ https://stackoverflow.com/questions/53058110/stop-reach-router-scrolling-down-th
 export const ScrollToTop = ({ children, location }) => {
   useLayoutEffect(() => window.scrollTo(0, 0), [location.pathname]);
   return children;
+};
+
+export const Capitalize = (string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 };

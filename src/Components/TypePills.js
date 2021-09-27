@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 const colors = {
   normal: "#A8A77A",
   fire: "#EE8130",
@@ -25,12 +26,12 @@ function TypePills({ types }) {
       {types.map((type) => (
         <inline-block key={type}>
           <span
-            style={{
+            css={{
               backgroundColor: colors[type],
               fontVariant: "small-caps",
               color: "#f8f8f8",
               borderRadius: 15,
-              padding: "0 12px 3px 12px",
+              padding: "1px 12px 3px 12px",
               marginRight: "5px",
             }}
           >

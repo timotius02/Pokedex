@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useQuery } from "@apollo/client";
 import Container from "@mui/material/Container";
+import pokeball from "./images/pokeball.png";
 
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
@@ -16,6 +17,8 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import Backdrop from "@mui/material/Backdrop";
+import Popper from "@mui/material/Popper";
 
 import useLocalStorage from "./hooks/useLocalStorage";
 
@@ -26,6 +29,7 @@ import TypePills from "./Components/TypePills";
 import Image from "./Components/Image";
 import MoveAccordions from "./Components/MoveAccordions";
 import PokemonStats from "./Components/PokemonStats";
+import Capitalize from "@mui/utils/capitalize";
 
 function Pokemon({ name }) {
   let { loading, error, data } = useQuery(GET_POKEMON, {
@@ -33,9 +37,20 @@ function Pokemon({ name }) {
   });
 
   const [myPokemons, setMyPokemons] = useLocalStorage("myPokemon", []);
+  const [isfirstTimeOpen, setIsFirstTimeOpen] = useLocalStorage(
+    "firstTimeOpen",
+    true
+  );
   const [open, setOpen] = useState(false);
   const [isError, setIsError] = useState(false);
   const [pokemonName, setPokemonName] = useState("");
+
+  const [openBackdrop, setOpenBackdrop] = useState(true);
+  const handleCloseBackdrop = () => {
+    setOpenBackdrop(false);
+    setIsFirstTimeOpen(false);
+  };
+  const [fab, setFab] = useState(null);
 
   if (loading) return "loading...";
   if (error) {
@@ -52,7 +67,7 @@ function Pokemon({ name }) {
   ]);
   const moves = data.pokemon.moves.map((curr) => curr.move.name);
 
-  const handleClose = () => {
+  const handleCloseDialog = () => {
     setOpen(false);
     setIsError(false);
     setPokemonName("");
@@ -90,15 +105,23 @@ function Pokemon({ name }) {
           <Grid item xs={12} sm={6}>
             <Stack spacing={2}>
               <Paper variant="outlined">
-                <Stack sx={{ flex: 1, textAlign: "center", padding: "1em 0" }}>
+                <Stack
+                  sx={{
+                    flex: 1,
+                    textAlign: "center",
+                    padding: "1em 0",
+                  }}
+                >
                   <Typography>{pokemonNumber(id)}</Typography>
 
-                  <Typography variant="h5">{data.pokemon.name}</Typography>
+                  <Typography variant="h5">
+                    {Capitalize(data.pokemon.name)}
+                  </Typography>
 
                   <div
                     css={{
                       margin: "auto",
-                      width: "90%",
+                      width: "100%",
                       maxWidth: 200,
                     }}
                   >
@@ -128,23 +151,64 @@ function Pokemon({ name }) {
               <Typography variant="h6" sx={{ pt: 1.5, pl: 1.5 }}>
                 Moves
               </Typography>
-              <MoveAccordions moves={moves} />
             </Paper>
+            <MoveAccordions moves={moves} />
           </Grid>
-          {/* <Grid item xs={12} sm={4}>
-            <Paper variant="outlined">
-              <Typography variant="h6" sx={{ pt: 1.5, pl: 1.5 }}>
-                Moves
-              </Typography>
-              <MoveAccordions
-                moves={moves.slice(Math.floor(moves.length / 2))}
-              />
-            </Paper>
-          </Grid> */}
         </Grid>
       </Box>
 
-      <Dialog open={open} onClose={handleClose}>
+      <Fab
+        ref={setFab}
+        color="primary"
+        aria-label="add"
+        sx={{
+          position: "fixed",
+          bottom: 16,
+          right: 16,
+          zIndex: 100,
+        }}
+        onClick={catchPokemon}
+        className="mui-fixed"
+      >
+        <img
+          css={{
+            width: "100%",
+            margin: "auto",
+          }}
+          src={pokeball}
+          alt="pokeball"
+        />
+      </Fab>
+      <Popper
+        sx={{ zIndex: 150 }}
+        open={fab !== null && isfirstTimeOpen && openBackdrop}
+        anchorEl={fab}
+        placement="left-start"
+        modifiers={[
+          {
+            name: "offset",
+            options: {
+              offset: [0, 10],
+            },
+          },
+        ]}
+      >
+        <Paper variant="outlines" sx={{ p: 2 }}>
+          {"Click Here to Catch " + Capitalize(name) + "!"}
+        </Paper>
+      </Popper>
+
+      <Backdrop
+        sx={{ color: "#fff" }}
+        open={isfirstTimeOpen && openBackdrop}
+        onClick={handleCloseBackdrop}
+      ></Backdrop>
+
+      <Dialog
+        open={open}
+        onClose={handleCloseBackdrop}
+        disableScrollLock={true}
+      >
         <DialogTitle>{`Gotcha! ${name} was caught.`}</DialogTitle>
         <DialogContent>
           <DialogContentText>Give your new friend a name:</DialogContentText>
@@ -163,13 +227,10 @@ function Pokemon({ name }) {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleCloseDialog}>Cancel</Button>
           <Button onClick={savePokemon}>Confirm</Button>
         </DialogActions>
       </Dialog>
-      <Fab color="primary" aria-label="add" onClick={catchPokemon}>
-        Catch
-      </Fab>
     </Container>
   );
 }
