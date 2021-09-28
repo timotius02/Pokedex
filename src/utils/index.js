@@ -17,6 +17,12 @@ export const ScrollToTop = ({ children, location }) => {
   return children;
 };
 
-export const Capitalize = (string) => {
-  return string.charAt(0).toUpperCase() + string.slice(1);
+export const Capitalize = (string) =>
+  string.charAt(0).toUpperCase() + string.slice(1);
+
+/*
+  Processes string from GraphQL
+  */
+export const ProcessString = (string) => {
+  return string.split("-").map(Capitalize).join(" ");
 };

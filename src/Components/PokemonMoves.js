@@ -1,3 +1,5 @@
+import { useQuery } from "@apollo/client";
+import { useState } from "react";
 import Paper from "@mui/material/Paper";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -13,8 +15,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
 import { GET_MOVE } from "../queries";
-import { useQuery } from "@apollo/client";
-import { useState } from "react";
+import { ProcessString } from "../utils";
 
 function PokemonMove({ move }) {
   const [expandedOnce, setExpandedOnce] = useState(false);
@@ -29,13 +30,13 @@ function PokemonMove({ move }) {
   }
 
   return (
-    <Accordion onChange={handleChange}>
+    <Accordion onChange={handleChange} variant="outlined">
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls={move + "-content"}
         id={move + "panel1a-header"}
       >
-        <Typography>{move}</Typography>
+        <Typography>{ProcessString(move)}</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <Typography>
@@ -49,7 +50,7 @@ function PokemonMove({ move }) {
             }`}
         </Typography>
         <TableContainer>
-          <Table size="small" aria-label="a dense table">
+          <Table size="small" aria-label="Move Stats table">
             <TableHead>
               <TableRow>
                 <TableCell>Power</TableCell>
@@ -99,13 +100,15 @@ function PokemonMove({ move }) {
 
 export default function PokemonMoves({ moves }) {
   return (
-    <Paper variant="outlined">
-      <Typography variant="h6" sx={{ pt: 1.5, pl: 1.5 }}>
-        Moves
-      </Typography>
+    <>
+      <Paper variant="outlined">
+        <Typography variant="h6" sx={{ pt: 1.5, pl: 1.5 }}>
+          Moves
+        </Typography>
+      </Paper>
       {moves.map((move) => (
         <PokemonMove key={move} move={move} />
       ))}
-    </Paper>
+    </>
   );
 }

@@ -8,6 +8,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import { GET_ALL_POKEMONS } from "./queries";
 import PokemonLogo from "./images/pokemon-logo.png";
+import PokemonLogoSmall from "./images/pokemon-logo-small.png";
 import { Context } from "./store";
 
 const variables = {
@@ -51,6 +52,10 @@ function Home() {
                 display: "block",
                 margin: "40px auto",
               }}
+              sizes="(max-width: 404px) 100vw, 404px"
+              srcSet={`
+              ${PokemonLogoSmall} 200w,
+              ${PokemonLogo} 404w`}
               src={PokemonLogo}
               alt="Pokemon Logo"
             />

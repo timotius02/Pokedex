@@ -23,15 +23,17 @@ function renderCell({ columnIndex, rowIndex, data, style }) {
 
   const pokemon = data[rowIndex * columnCount + columnIndex];
 
-  return (
+  return pokemon ? (
     <Link
       underline="none"
       component={RouterLink}
       to={"/pokemon/" + pokemon.name}
     >
       <GetPokemonTypes name={pokemon.name}>
-        {({ types }) => (
+        {({ types, loading, error }) => (
           <PokemonCard
+            loading={loading}
+            error={error}
             style={{
               ...style,
               left:
@@ -46,6 +48,8 @@ function renderCell({ columnIndex, rowIndex, data, style }) {
         )}
       </GetPokemonTypes>
     </Link>
+  ) : (
+    <PokemonCard error={true} />
   );
 }
 

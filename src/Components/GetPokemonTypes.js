@@ -21,6 +21,8 @@ export function GetPokemonTypes({ children, name, ...props }) {
 
   return children({
     ...props,
+    loading,
+    error,
     types,
   });
 }

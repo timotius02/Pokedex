@@ -103,7 +103,7 @@ function CatchButton({ name, id, types, sprites }) {
         ]}
       >
         <Paper variant="outlines" sx={{ p: 2 }}>
-          {"Click Here to Catch " + Capitalize(name) + "!"}
+          {"Click the Pokeball to Catch " + Capitalize(name) + "!"}
         </Paper>
       </Popper>
 
