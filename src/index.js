@@ -8,16 +8,33 @@ import { ApolloProvider } from "@apollo/client";
 import client from "./lib/apollo-client";
 import ContextStore from "./store";
 
-ReactDOM.render(
+const Index = () => (
   <React.StrictMode>
     <ContextStore>
       <ApolloProvider client={client}>
         <App />
       </ApolloProvider>
     </ContextStore>
-  </React.StrictMode>,
-  document.getElementById("root")
+  </React.StrictMode>
 );
+
+const rootElement = document.getElementById("root");
+if (rootElement.hasChildNodes()) {
+  ReactDOM.hydrate(<Index />, rootElement);
+} else {
+  ReactDOM.render(<Index />, rootElement);
+}
+
+// ReactDOM.render(
+//   <React.StrictMode>
+//     <ContextStore>
+//       <ApolloProvider client={client}>
+//         <App />
+//       </ApolloProvider>
+//     </ContextStore>
+//   </React.StrictMode>,
+//   document.getElementById("root")
+// );
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
