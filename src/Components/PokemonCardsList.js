@@ -4,11 +4,16 @@ import Typography from "@mui/material/Typography";
 import { FixedSizeGrid } from "react-window";
 import InfiniteLoader from "react-window-infinite-loader";
 import { ReactWindowScroller } from "react-window-scroller";
+import { Link as RouterLink } from "@reach/router";
+import Link from "@mui/material/Link";
 
 import PokemonCard from "./PokemonCard";
 import useWindowSize from "../hooks/useWindowSize";
+import GetPokemonTypes from "./GetPokemonTypes";
+
 const GUTTER_SIZE = 20;
 const ITEM_COUNT = 1118;
+const ROW_HEIGHT = 335;
 
 function renderCell({ columnIndex, rowIndex, data, style }) {
   let columnCount = 1;
@@ -19,16 +24,28 @@ function renderCell({ columnIndex, rowIndex, data, style }) {
   const pokemon = data[rowIndex * columnCount + columnIndex];
 
   return (
-    <PokemonCard
-      style={{
-        ...style,
-        left: style.left + (columnCount > 1 ? GUTTER_SIZE : GUTTER_SIZE / 2),
-        top: style.top + GUTTER_SIZE,
-        width: style.width - GUTTER_SIZE,
-        height: style.height - GUTTER_SIZE,
-      }}
-      {...pokemon}
-    />
+    <Link
+      underline="none"
+      component={RouterLink}
+      to={"/pokemon/" + pokemon.name}
+    >
+      <GetPokemonTypes name={pokemon.name}>
+        {({ types }) => (
+          <PokemonCard
+            style={{
+              ...style,
+              left:
+                style.left + (columnCount > 1 ? GUTTER_SIZE : GUTTER_SIZE / 2),
+              top: style.top + GUTTER_SIZE,
+              width: style.width - GUTTER_SIZE,
+              height: style.height - GUTTER_SIZE,
+            }}
+            types={types}
+            {...pokemon}
+          />
+        )}
+      </GetPokemonTypes>
+    </Link>
   );
 }
 
@@ -47,9 +64,6 @@ const innerElementType = forwardRef(({ style, ...rest }, ref) => (
 /**
  * Converts OnitemsRendered function return by infiniteloader to
  * the form expeected by FixedSizeGrid
- * @param {*} infiniteOnItemsRendered
- * @param {*} columnCount
- * @returns
  */
 const OnItemsRenderedGrid =
   (infiniteOnItemsRendered, columnCount) =>
@@ -101,7 +115,7 @@ export function PokemonCardsList({ pokemons, onLoadMore }) {
                 columnWidth={292 + GUTTER_SIZE}
                 height={size.height + 292 * 2}
                 rowCount={Math.ceil(ITEM_COUNT / columnCount)}
-                rowHeight={390 + GUTTER_SIZE}
+                rowHeight={ROW_HEIGHT + GUTTER_SIZE}
                 width={size.width}
                 itemData={pokemons}
                 outerRef={outerRef}

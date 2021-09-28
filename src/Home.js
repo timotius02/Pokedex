@@ -1,4 +1,5 @@
 /** @jsxImportSource @emotion/react */
+import { useContext } from "react";
 import { useQuery } from "@apollo/client";
 import Container from "@mui/material/Container";
 import PokemonCardsList from "./Components/PokemonCardsList";
@@ -6,6 +7,8 @@ import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import { GET_ALL_POKEMONS } from "./queries";
+import PokemonLogo from "./images/pokemon-logo.png";
+import { Context } from "./store";
 
 const variables = {
   limit: 20,
@@ -16,9 +19,11 @@ function Home() {
   const { loading, error, data, fetchMore } = useQuery(GET_ALL_POKEMONS, {
     variables,
   });
+  const [, dispatch] = useContext(Context);
 
   if (error) {
-    return "Error...";
+    dispatch({ type: "SET_ERROR", payload: error });
+    return <main></main>;
   }
 
   return (
@@ -30,6 +35,7 @@ function Home() {
               color: "white",
               textTransform: "uppercase",
               textAlign: "center",
+              alignSelf: "center",
             }}
           >
             <CircularProgress color="inherit" size={60} />
@@ -45,20 +51,22 @@ function Home() {
                 display: "block",
                 margin: "40px auto",
               }}
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/404px-International_Pok%C3%A9mon_logo.svg.png"
+              src={PokemonLogo}
               alt="Pokemon Logo"
             />
-            <PokemonCardsList
-              pokemons={data.pokemons.results || []}
-              loading={loading}
-              onLoadMore={() => {
-                fetchMore({
-                  variables: {
-                    offset: data.pokemons.results.length,
-                  },
-                });
-              }}
-            />
+            {data ? (
+              <PokemonCardsList
+                pokemons={data.pokemons.results || []}
+                loading={loading}
+                onLoadMore={() => {
+                  fetchMore({
+                    variables: {
+                      offset: data.pokemons.results.length,
+                    },
+                  });
+                }}
+              />
+            ) : null}
           </>
         )}
       </Container>

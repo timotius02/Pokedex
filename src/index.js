@@ -6,12 +6,15 @@ import reportWebVitals from "./reportWebVitals";
 
 import { ApolloProvider } from "@apollo/client";
 import client from "./lib/apollo-client";
+import ContextStore from "./store";
 
 ReactDOM.render(
   <React.StrictMode>
-    <ApolloProvider client={client}>
-      <App />
-    </ApolloProvider>
+    <ContextStore>
+      <ApolloProvider client={client}>
+        <App />
+      </ApolloProvider>
+    </ContextStore>
   </React.StrictMode>,
   document.getElementById("root")
 );

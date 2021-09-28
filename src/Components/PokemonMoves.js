@@ -1,3 +1,4 @@
+import Paper from "@mui/material/Paper";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -15,7 +16,7 @@ import { GET_MOVE } from "../queries";
 import { useQuery } from "@apollo/client";
 import { useState } from "react";
 
-function MoveAccordion({ move }) {
+function PokemonMove({ move }) {
   const [expandedOnce, setExpandedOnce] = useState(false);
 
   const { loading, data } = useQuery(GET_MOVE, {
@@ -96,12 +97,15 @@ function MoveAccordion({ move }) {
   );
 }
 
-export default function MoveAccordions({ moves }) {
+export default function PokemonMoves({ moves }) {
   return (
-    <>
+    <Paper variant="outlined">
+      <Typography variant="h6" sx={{ pt: 1.5, pl: 1.5 }}>
+        Moves
+      </Typography>
       {moves.map((move) => (
-        <MoveAccordion key={move} move={move} />
+        <PokemonMove key={move} move={move} />
       ))}
-    </>
+    </Paper>
   );
 }

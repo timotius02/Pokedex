@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 
-// Pokemons are stored in the form of [{name: "nickName", species: "specieName" }]
 function getStorageValue(key, defaultValue) {
   if (typeof window !== "undefined") {
     const saved = localStorage.getItem(key);
