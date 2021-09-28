@@ -7,6 +7,11 @@ const Reducer = (state, action) => {
         ...state,
         error: action.payload,
       };
+    case "SET_LOADING":
+      return {
+        ...state,
+        loading: action.payload,
+      };
     default:
       return state;
   }
@@ -14,6 +19,7 @@ const Reducer = (state, action) => {
 
 const initialState = {
   error: null,
+  loading: false,
 };
 
 const ContextStore = ({ children }) => {

@@ -28,6 +28,8 @@ function CatchButton({ name, id, types, sprites }) {
   const [openBackdrop, setOpenBackdrop] = useState(true);
   const [fab, setFab] = useState(null);
 
+  const capitalizedName = Capitalize(name);
+
   const handleCloseBackdrop = () => {
     setOpenBackdrop(false);
     setIsFirstTimeOpen(false);
@@ -92,7 +94,7 @@ function CatchButton({ name, id, types, sprites }) {
         sx={{ zIndex: 150 }}
         open={fab !== null && isfirstTimeOpen && openBackdrop}
         anchorEl={fab}
-        placement="left-start"
+        placement={window.innerWidth < 600 ? "top-start" : "left-start"}
         modifiers={[
           {
             name: "offset",
@@ -103,7 +105,7 @@ function CatchButton({ name, id, types, sprites }) {
         ]}
       >
         <Paper variant="outlines" sx={{ p: 2 }}>
-          {"Click the Pokeball to Catch " + Capitalize(name) + "!"}
+          {"Click this Pokeball to catch " + capitalizedName + "!"}
         </Paper>
       </Popper>
 
@@ -118,7 +120,7 @@ function CatchButton({ name, id, types, sprites }) {
         onClose={handleCloseBackdrop}
         disableScrollLock={true}
       >
-        <DialogTitle>{`Gotcha! ${name} was caught.`}</DialogTitle>
+        <DialogTitle>{`Gotcha! ${capitalizedName} was caught.`}</DialogTitle>
         <DialogContent>
           <DialogContentText>Give your new friend a name:</DialogContentText>
           <TextField

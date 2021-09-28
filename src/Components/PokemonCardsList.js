@@ -14,6 +14,7 @@ import GetPokemonTypes from "./GetPokemonTypes";
 const GUTTER_SIZE = 20;
 const ITEM_COUNT = 1118;
 const ROW_HEIGHT = 335;
+const COLUMN_WIDTH = 292;
 
 function renderCell({ columnIndex, rowIndex, data, style }) {
   let columnCount = 1;
@@ -96,7 +97,7 @@ export function PokemonCardsList({ pokemons, onLoadMore }) {
   else if (size.width >= 600) columnCount = 2;
   const isItemLoaded = (index) => !!pokemons[index * columnCount];
 
-  return pokemons.length > 0 ? (
+  return pokemons && pokemons.length > 0 ? (
     <div css={{ display: "flex", justifyContent: "center" }}>
       <ReactWindowScroller isGrid>
         {({ ref: scrollerRef, outerRef, style, onScroll }) => (
@@ -112,12 +113,14 @@ export function PokemonCardsList({ pokemons, onLoadMore }) {
                   columnCount
                 )}
                 ref={(ref) => {
+                  // Hack to get Window Scroller & infinite loader
+                  // to play nice with each other
                   loadingRef(ref);
                   scrollerRef.current = ref;
                 }}
                 columnCount={columnCount}
-                columnWidth={292 + GUTTER_SIZE}
-                height={size.height + 292 * 2}
+                columnWidth={COLUMN_WIDTH + GUTTER_SIZE}
+                height={size.height + COLUMN_WIDTH * 2}
                 rowCount={Math.ceil(ITEM_COUNT / columnCount)}
                 rowHeight={ROW_HEIGHT + GUTTER_SIZE}
                 width={size.width}

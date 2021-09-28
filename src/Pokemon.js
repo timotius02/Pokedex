@@ -20,6 +20,7 @@ import PokemonCard from "./Components/PokemonCard";
 import CatchButton from "./Components/CatchButton";
 import { Context } from "./store";
 import { ProcessString } from "./utils";
+import Loader from "./Components/Loader";
 
 function Pokemon({ name }) {
   let { loading, error, data } = useQuery(GET_POKEMON, {
@@ -27,7 +28,7 @@ function Pokemon({ name }) {
   });
   const [, dispatch] = useContext(Context);
 
-  if (loading) return "loading...";
+  if (loading) return <Loader />;
   if (error) {
     dispatch({ type: "SET_ERROR", payload: error });
     return "error...";
@@ -77,9 +78,7 @@ function Pokemon({ name }) {
                 </Table>
               </TableContainer>
 
-              <Paper variant="outlined" sx={{ p: 2 }}>
-                <PokemonStats stats={stats} />
-              </Paper>
+              <PokemonStats stats={stats} />
             </Stack>
           </Grid>
 

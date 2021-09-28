@@ -20,7 +20,9 @@ function MyPokemons() {
     <div>
       <main>
         <Container sx={{ pt: 2 }}>
-          <Typography variant="h4">My Pokemons</Typography>
+          <Typography variant="h4" sx={{ pt: 2, pb: 2 }}>
+            My Pokemons
+          </Typography>
           <Grid container spacing={2}>
             {myPokemons.map((pokemon, i) => (
               <Grid key={pokemon.nickname} item xs={12} sm={6} md={4} lg={3}>

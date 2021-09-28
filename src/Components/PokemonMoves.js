@@ -102,7 +102,7 @@ export default function PokemonMoves({ moves }) {
   return (
     <>
       <Paper variant="outlined">
-        <Typography variant="h6" sx={{ pt: 1.5, pl: 1.5 }}>
+        <Typography variant="h6" sx={{ fontWeight: "bold", pt: 1.5, pl: 1.5 }}>
           Moves
         </Typography>
       </Paper>

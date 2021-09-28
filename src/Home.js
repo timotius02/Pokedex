@@ -3,16 +3,14 @@ import { useContext } from "react";
 import { useQuery } from "@apollo/client";
 import Container from "@mui/material/Container";
 import PokemonCardsList from "./Components/PokemonCardsList";
-import Typography from "@mui/material/Typography";
-import CircularProgress from "@mui/material/CircularProgress";
-import Box from "@mui/material/Box";
 import { GET_ALL_POKEMONS } from "./queries";
 import PokemonLogo from "./images/pokemon-logo.png";
 import PokemonLogoSmall from "./images/pokemon-logo-small.png";
 import { Context } from "./store";
+import Loader from "./Components/Loader";
 
 const variables = {
-  limit: 20,
+  limit: 24,
   offset: 0,
 };
 
@@ -29,20 +27,10 @@ function Home() {
 
   return (
     <main>
-      <Container maxWidth={false}>
-        {loading ? (
-          <Box
-            sx={{
-              color: "white",
-              textTransform: "uppercase",
-              textAlign: "center",
-              alignSelf: "center",
-            }}
-          >
-            <CircularProgress color="inherit" size={60} />
-            <Typography variant="h5">Loading</Typography>
-          </Box>
-        ) : (
+      {loading ? (
+        <Loader />
+      ) : (
+        <Container maxWidth={false}>
           <>
             <img
               css={{
@@ -73,8 +61,8 @@ function Home() {
               />
             ) : null}
           </>
-        )}
-      </Container>
+        </Container>
+      )}
     </main>
   );
 }
