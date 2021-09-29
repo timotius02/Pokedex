@@ -1,9 +1,5 @@
-<!-- PROJECT LOGO -->
-<br />
 <p align="center">
-
   <h3 align="center">Poképedia</h3>
-
   <p align="center">
     An Open Source Pokedex built with React & GraphQL
     <br />
