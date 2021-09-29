@@ -2,6 +2,8 @@
 import Box from "@mui/material/Box";
 import { css, keyframes } from "@emotion/react";
 
+/* Custom Pokeball Loading Animation
+ */
 const roll = keyframes`
   0 { transform: translate(0, 0) rotate(0); }
   80% { transform: translate(0, 0) rotate(360deg); }
@@ -30,7 +32,7 @@ function Loader() {
           right: 0;
           top: 0;
           bottom: 0;
-          animation: ${roll} 1s ease-in-out infinite;
+          animation: ${roll} 0.75s ease-in-out infinite;
         `}
       >
         <div

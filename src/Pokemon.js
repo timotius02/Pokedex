@@ -32,7 +32,7 @@ function Pokemon({ name }) {
     if (error) {
       dispatch({ type: "SET_ERROR", payload: error });
     }
-  }, [error]);
+  }, [error, dispatch]);
 
   if (loading) return <Loader />;
   if (error) return <main></main>;

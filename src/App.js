@@ -15,7 +15,6 @@ import Loader from "./Components/Loader";
 const Home = lazy(() => import("./Home"));
 const Pokemon = lazy(() => import("./Pokemon"));
 const MyPokemons = lazy(() => import("./MyPokemons"));
-const NotFound = lazy(() => import("./NotFound"));
 
 export const themeOptions = {
   palette: {
@@ -49,7 +48,7 @@ function App() {
               component={RouterLink}
               to={"/"}
             >
-              Pokédex
+              Poképedia
             </Link>
             <Link
               underline="none"
@@ -72,10 +71,9 @@ function App() {
         <Suspense fallback={<Loader />}>
           <Router primary={false}>
             <ScrollToTop path="/">
-              <Home path="/" />
+              <Home path="/" default />
               <Pokemon path="/pokemon/:name" />
               <MyPokemons path="/my-pokemons" />
-              <NotFound default />
             </ScrollToTop>
           </Router>
         </Suspense>

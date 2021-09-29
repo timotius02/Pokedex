@@ -81,10 +81,10 @@ function MyPokemons() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>No</Button>
           <Button onClick={confirmRelease} autoFocus>
             Yes
           </Button>
+          <Button onClick={handleClose}>No</Button>
         </DialogActions>
       </Dialog>
     </main>

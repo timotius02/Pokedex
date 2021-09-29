@@ -24,7 +24,7 @@ function Home() {
     if (error) {
       dispatch({ type: "SET_ERROR", payload: error });
     }
-  }, [error]);
+  }, [error, dispatch]);
 
   if (error) return <main></main>;
 
