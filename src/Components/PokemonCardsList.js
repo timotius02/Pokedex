@@ -49,7 +49,7 @@ function renderCell({ columnIndex, rowIndex, data, style }) {
                 }}
                 types={types}
                 {...pokemon}
-                extraString={"Caught: " + count}
+                extraString={"Owned: " + count}
               />
             )}
           </CountPokemon>

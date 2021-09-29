@@ -42,30 +42,36 @@ function MyPokemons() {
           My Pokemons
         </Typography>
         <Grid container spacing={2}>
-          {myPokemons.map((pokemon, i) => (
-            <Grid key={pokemon.nickname} item xs={12} sm={6} md={4} lg={3}>
-              <Link
-                underline="none"
-                component={RouterLink}
-                to={"/pokemon/" + pokemon.name}
-              >
-                <PokemonCard
-                  key={pokemon.name}
-                  name={`${pokemon.nickname}`}
-                  id={pokemon.id}
-                  image={pokemon.image}
-                  types={pokemon.types}
-                  remove={true}
-                  removeHandler={(e) => {
-                    e.preventDefault();
+          {myPokemons.length > 0 ? (
+            myPokemons.map((pokemon, i) => (
+              <Grid key={pokemon.nickname} item xs={12} sm={6} md={4} lg={3}>
+                <Link
+                  underline="none"
+                  component={RouterLink}
+                  to={"/pokemon/" + pokemon.name}
+                >
+                  <PokemonCard
+                    key={pokemon.name}
+                    name={`${pokemon.nickname}`}
+                    id={pokemon.id}
+                    image={pokemon.image}
+                    types={pokemon.types}
+                    remove={true}
+                    removeHandler={(e) => {
+                      e.preventDefault();
 
-                    setReleaseId(i);
-                    setOpen(true);
-                  }}
-                />
-              </Link>
-            </Grid>
-          ))}
+                      setReleaseId(i);
+                      setOpen(true);
+                    }}
+                  />
+                </Link>
+              </Grid>
+            ))
+          ) : (
+            <Typography variant="h6">
+              You haven't caught any yet! Go to a Pokemon's to try a catch one.
+            </Typography>
+          )}
         </Grid>
       </Container>
 
