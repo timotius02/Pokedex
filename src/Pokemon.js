@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 import Container from "@mui/material/Container";
 
@@ -28,11 +28,14 @@ function Pokemon({ name }) {
   });
   const [, dispatch] = useContext(Context);
 
+  useEffect(() => {
+    if (error) {
+      dispatch({ type: "SET_ERROR", payload: error });
+    }
+  }, [error]);
+
   if (loading) return <Loader />;
-  if (error) {
-    dispatch({ type: "SET_ERROR", payload: error });
-    return "error...";
-  }
+  if (error) return <main></main>;
 
   let { id, sprites, height, weight } = data.pokemon;
 

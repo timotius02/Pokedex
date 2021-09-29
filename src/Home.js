@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 import Container from "@mui/material/Container";
 import PokemonCardsList from "./Components/PokemonCardsList";
@@ -20,10 +20,13 @@ function Home() {
   });
   const [, dispatch] = useContext(Context);
 
-  if (error) {
-    dispatch({ type: "SET_ERROR", payload: error });
-    return <main></main>;
-  }
+  useEffect(() => {
+    if (error) {
+      dispatch({ type: "SET_ERROR", payload: error });
+    }
+  }, [error]);
+
+  if (error) return <main></main>;
 
   return (
     <main>

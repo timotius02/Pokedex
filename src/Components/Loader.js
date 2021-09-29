@@ -38,7 +38,7 @@ function Loader() {
             border-radius: 50%;
             width: 100px;
             height: 100px;
-            border: 8px solid #1d1d1b;
+            border: 6px solid #1d1d1b;
             z-index: 100;
             display: block;
             margin: auto;

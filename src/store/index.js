@@ -2,16 +2,12 @@ import { createContext, useReducer } from "react";
 
 const Reducer = (state, action) => {
   switch (action.type) {
-    case "SET_ERROR":
+    case "SET_ERROR": {
       return {
         ...state,
-        error: action.payload,
+        error: action.payload.message,
       };
-    case "SET_LOADING":
-      return {
-        ...state,
-        loading: action.payload,
-      };
+    }
     default:
       return state;
   }
@@ -19,7 +15,6 @@ const Reducer = (state, action) => {
 
 const initialState = {
   error: null,
-  loading: false,
 };
 
 const ContextStore = ({ children }) => {

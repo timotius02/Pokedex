@@ -1,8 +1,6 @@
-import { useContext } from "react";
+import { useContext, lazy, Suspense } from "react";
 import { Router, Link as RouterLink } from "@reach/router";
 import Link from "@mui/material/Link";
-import Home from "./Home";
-import Pokemon from "./Pokemon";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -10,19 +8,19 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Alert from "@mui/material/Alert";
 import { Global, css } from "@emotion/react";
 
-import MyPokemons from "./MyPokemons";
-import NotFound from "./NotFound";
 import { ScrollToTop } from "./utils";
 import { Context } from "./store";
+import Loader from "./Components/Loader";
+
+const Home = lazy(() => import("./Home"));
+const Pokemon = lazy(() => import("./Pokemon"));
+const MyPokemons = lazy(() => import("./MyPokemons"));
+const NotFound = lazy(() => import("./NotFound"));
 
 export const themeOptions = {
   palette: {
-    type: "light",
     primary: {
       main: "#F44336",
-    },
-    secondary: {
-      main: "#f50057",
     },
   },
 };
@@ -71,14 +69,16 @@ function App() {
           </Alert>
         ) : null}
 
-        <Router primary={false}>
-          <ScrollToTop path="/">
-            <Home path="/" />
-            <Pokemon path="/pokemon/:name" />
-            <MyPokemons path="/my-pokemons" />
-            <NotFound default />
-          </ScrollToTop>
-        </Router>
+        <Suspense fallback={<Loader />}>
+          <Router primary={false}>
+            <ScrollToTop path="/">
+              <Home path="/" />
+              <Pokemon path="/pokemon/:name" />
+              <MyPokemons path="/my-pokemons" />
+              <NotFound default />
+            </ScrollToTop>
+          </Router>
+        </Suspense>
       </ThemeProvider>
     </>
   );

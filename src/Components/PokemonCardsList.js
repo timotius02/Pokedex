@@ -10,6 +10,7 @@ import Link from "@mui/material/Link";
 import PokemonCard from "./PokemonCard";
 import useWindowSize from "../hooks/useWindowSize";
 import GetPokemonTypes from "./GetPokemonTypes";
+import CountPokemon from "../Components/CountPokemon";
 
 const GUTTER_SIZE = 20;
 const ITEM_COUNT = 1118;
@@ -32,25 +33,31 @@ function renderCell({ columnIndex, rowIndex, data, style }) {
     >
       <GetPokemonTypes name={pokemon.name}>
         {({ types, loading, error }) => (
-          <PokemonCard
-            loading={loading}
-            error={error}
-            style={{
-              ...style,
-              left:
-                style.left + (columnCount > 1 ? GUTTER_SIZE : GUTTER_SIZE / 2),
-              top: style.top + GUTTER_SIZE,
-              width: style.width - GUTTER_SIZE,
-              height: style.height - GUTTER_SIZE,
-            }}
-            types={types}
-            {...pokemon}
-          />
+          <CountPokemon name={pokemon.name}>
+            {({ count }) => (
+              <PokemonCard
+                loading={loading}
+                error={error}
+                style={{
+                  ...style,
+                  left:
+                    style.left +
+                    (columnCount > 1 ? GUTTER_SIZE : GUTTER_SIZE / 2),
+                  top: style.top + GUTTER_SIZE,
+                  width: style.width - GUTTER_SIZE,
+                  height: style.height - GUTTER_SIZE,
+                }}
+                types={types}
+                {...pokemon}
+                extraString={"Caught: " + count}
+              />
+            )}
+          </CountPokemon>
         )}
       </GetPokemonTypes>
     </Link>
   ) : (
-    <PokemonCard error={true} />
+    <PokemonCard error={true} style={style} />
   );
 }
 

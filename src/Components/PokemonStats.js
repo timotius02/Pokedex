@@ -7,7 +7,7 @@ import { ProcessString } from "../utils";
 function PokemonStats({ stats }) {
   return (
     <Paper variant="outlined" sx={{ p: 2 }}>
-      <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+      <Typography variant="h6" sx={{ fontWeight: "bold", pb: 1 }}>
         Base Stats
       </Typography>
       {stats.map((stat) => (

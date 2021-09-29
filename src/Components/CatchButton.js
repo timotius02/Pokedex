@@ -27,6 +27,7 @@ function CatchButton({ name, id, types, sprites }) {
   const [nickname, setNickname] = useState("");
   const [openBackdrop, setOpenBackdrop] = useState(true);
   const [fab, setFab] = useState(null);
+  const [catchSuccess, setCatchSuccess] = useState(false);
 
   const capitalizedName = Capitalize(name);
 
@@ -35,22 +36,28 @@ function CatchButton({ name, id, types, sprites }) {
     setIsFirstTimeOpen(false);
   };
 
-  function handleCloseDialog() {
-    setOpen(false);
+  function handleCloseDialog(e) {
+    if (e) {
+      e.preventDefault();
+    }
     setIsError(false);
     setNickname("");
+    setCatchSuccess(false);
+    setOpen(false);
   }
 
   function catchPokemon() {
     let random = Math.random();
     if (random > 0.5) {
-      setOpen(true);
+      setCatchSuccess(true);
     }
+
+    setOpen(true);
   }
   function savePokemon() {
     let uniqueName = true;
     for (let pokemon of myPokemons) {
-      if (pokemon.name === nickname) {
+      if (pokemon.nickname === nickname) {
         uniqueName = false;
       }
     }
@@ -62,8 +69,8 @@ function CatchButton({ name, id, types, sprites }) {
         ...myPokemons,
         { name, id, types, nickname, image: sprites.front_default },
       ]);
-      setOpen(false);
-      setNickname("");
+
+      handleCloseDialog();
     }
   }
   return (
@@ -90,6 +97,7 @@ function CatchButton({ name, id, types, sprites }) {
           alt="pokeball"
         />
       </Fab>
+
       <Popper
         sx={{ zIndex: 150 }}
         open={fab !== null && isfirstTimeOpen && openBackdrop}
@@ -120,27 +128,42 @@ function CatchButton({ name, id, types, sprites }) {
         onClose={handleCloseBackdrop}
         disableScrollLock={true}
       >
-        <DialogTitle>{`Gotcha! ${capitalizedName} was caught.`}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>Give your new friend a name:</DialogContentText>
-          <TextField
-            error={isError}
-            helperText={
-              isError ? "Another pokemon has this nickname already." : ""
-            }
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Pokemon Name"
-            fullWidth
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button onClick={savePokemon}>Confirm</Button>
-        </DialogActions>
+        {open && catchSuccess ? (
+          <>
+            <DialogTitle>{`Gotcha! ${capitalizedName} was caught.`}</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Give your new friend a name:
+              </DialogContentText>
+              <TextField
+                margin="normal"
+                error={isError}
+                helperText={
+                  isError ? "Another pokemon has this nickname already." : ""
+                }
+                autoFocus
+                id="name"
+                label="Pokemon Name"
+                fullWidth
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseDialog}>Cancel</Button>
+              <Button onClick={savePokemon}>Confirm</Button>
+            </DialogActions>
+          </>
+        ) : null}
+
+        {open && !catchSuccess ? (
+          <>
+            <DialogTitle>{`Catch Failed. ${capitalizedName} got away.`}</DialogTitle>
+            <DialogActions>
+              <Button onClick={handleCloseDialog}>Close</Button>
+            </DialogActions>
+          </>
+        ) : null}
       </Dialog>
     </>
   );
