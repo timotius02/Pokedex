@@ -57,10 +57,22 @@ function renderCell({ columnIndex, rowIndex, data, style }) {
       </GetPokemonTypes>
     </Link>
   ) : (
-    <PokemonCard error={true} style={style} />
+    <PokemonCard
+      error={true}
+      style={{
+        ...style,
+        left: style.left + (columnCount > 1 ? GUTTER_SIZE : GUTTER_SIZE / 2),
+        top: style.top + GUTTER_SIZE,
+        width: style.width - GUTTER_SIZE,
+        height: style.height - GUTTER_SIZE,
+      }}
+    />
   );
 }
 
+/*
+Adds padding to grid of cards
+*/
 const innerElementType = forwardRef(({ style, ...rest }, ref) => (
   <div
     ref={ref}

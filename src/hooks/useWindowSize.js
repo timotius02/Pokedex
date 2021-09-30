@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
 
+/*
+Makes the component listen to window size
+Used for making responsive grids
+*/
 function useWindowSize() {
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,

@@ -1,5 +1,21 @@
 import { useState, useEffect } from "react";
 
+/*
+Adds values to LocalStorage
+Current Schema:
+{
+  myPokemon: [{
+    { 
+      name: String, 
+      id: number, 
+      types: [String], 
+      nickname: String, 
+      image: String 
+    }
+  }],
+  firstTimeOpen: bool
+}
+*/
 function getStorageValue(key, defaultValue) {
   if (typeof window !== "undefined") {
     const saved = localStorage.getItem(key);
