@@ -1,7 +1,7 @@
 import useLocalStorage from "../hooks/useLocalStorage";
 
 /* 
-  Counts the number of a type the user has caught
+  HOC that counts the number of a pokemon the user has caught
 */
 export function CountPokemon({ children, name, ...props }) {
   const [myPokemons] = useLocalStorage("myPokemon", []);

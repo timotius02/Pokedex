@@ -39,7 +39,7 @@ function MyPokemons() {
     <main>
       <Container sx={{ pt: 2 }}>
         <Typography variant="h4" sx={{ pt: 2, pb: 2 }}>
-          My Pokemons
+          My Pokemon
         </Typography>
         <Grid container spacing={2}>
           {myPokemons.length > 0 ? (

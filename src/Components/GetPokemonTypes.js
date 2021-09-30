@@ -3,6 +3,10 @@ import { useQuery } from "@apollo/client";
 import { GET_TYPE } from "../queries";
 import { Context } from "../store";
 
+/*
+  Just fetch a pokemon's types from the API
+  Used in Home since GET_ALL_POKEMONS doesn't return types
+*/
 export function GetPokemonTypes({ children, name, ...props }) {
   const { loading, error, data } = useQuery(GET_TYPE, { variables: { name } });
   const [, dispatch] = useContext(Context);

@@ -2,7 +2,8 @@
 import Box from "@mui/material/Box";
 import { css, keyframes } from "@emotion/react";
 
-/* Custom Pokeball Loading Animation
+/*
+ Custom Pokeball Loading Animation
  */
 const roll = keyframes`
   0 { transform: translate(0, 0) rotate(0); }
@@ -14,7 +15,7 @@ function Loader() {
   return (
     <Box
       sx={{
-        height: "100vh",
+        height: "calc(100vh - 56px)",
         width: "100%",
         display: "flex",
         justifyContent: "center",
